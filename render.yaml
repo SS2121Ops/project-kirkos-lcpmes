@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: kirkos-lcppme-system
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kirkos-lcppme-db
+          property: connectionString
+
+databases:
+  - name: kirkos-lcppme-db
+    plan: free
